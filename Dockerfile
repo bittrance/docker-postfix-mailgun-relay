@@ -1,5 +1,5 @@
-FROM ubuntu:14.04
-MAINTAINER Lyle Scott, III "lyle@digitalfoo.net"
+FROM ubuntu:16.04
+MAINTAINER https://github.com/bittrance
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -7,7 +7,7 @@ USER root
 
 RUN apt-get update && \
 #>> Postfix setup
-apt-get -q -y install \
+apt-get -q -y --no-install-recommends install \
     postfix \
     mailutils \
     libsasl2-2 \
@@ -15,7 +15,7 @@ apt-get -q -y install \
     libsasl2-modules && \
 # main.cf
 postconf -e smtpd_banner="\$myhostname ESMTP" && \
-postconf -e relayhost=[smtp.gmail.com]:587 && \
+postconf -e relayhost=[smtp.mailgun.org]:587 && \
 postconf -e smtp_sasl_auth_enable=yes && \
 postconf -e smtp_sasl_password_maps=hash:/etc/postfix/sasl_passwd && \
 postconf -e smtp_sasl_security_options=noanonymous && \
@@ -32,7 +32,7 @@ sed -i -E 's/^(\s*)system\(\);/\1unix-stream("\/dev\/log");/' /etc/syslog-ng/sys
 # https://github.com/LyleScott/docker-postfix-gmail-relay/issues/1
 sed -i '/^smtp_tls_CAfile =/d' /etc/postfix/main.cf && \
 
-apt-get install -q -y \
+apt-get install -q -y --no-install-recommends \
     supervisor
 
 COPY supervisord.conf /etc/supervisor/

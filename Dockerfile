@@ -15,7 +15,7 @@ apt-get -q -y --no-install-recommends install \
     libsasl2-modules && \
 # main.cf
 postconf -e smtpd_banner="\$myhostname ESMTP" && \
-postconf -e relayhost=[smtp.mailgun.org]:587 && \
+postconf -e relayhost=[smtp.mailgun.org]:2525 && \
 postconf -e smtp_sasl_auth_enable=yes && \
 postconf -e smtp_sasl_password_maps=hash:/etc/postfix/sasl_passwd && \
 postconf -e smtp_sasl_security_options=noanonymous && \
@@ -23,7 +23,7 @@ postconf -e smtp_tls_CAfile=/etc/postfix/cacert.pem  && \
 postconf -e smtp_use_tls=yes && \
 
 #>> Setup syslog-ng to echo postfix log data to the screen
-apt-get install -q -y \
+apt-get install -q -y --no-install-recommends \
     syslog-ng \
     syslog-ng-core && \
 # system() can't be used since Docker doesn't allow access to /proc/kmsg.

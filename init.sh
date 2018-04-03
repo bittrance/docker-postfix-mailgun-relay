@@ -13,6 +13,14 @@ if [ ! -z "${MYNETWORKS}" ]; then
     postconf -e mynetworks="${MYNETWORKS}"
 fi
 
+# Set mydestination
+if [ ! -z "${MYDESTINATION}" ]; then
+    ORIG_MYDESTINATION=$(postconf -h mydestination)
+    echo "original mydestination = ${ORIG_MYDESTINATION}"
+    echo "setting mydestination = ${MYDESTINATION}"
+    postconf -e mydestination="${ORIG_MYDESTINATION}, ${MYDESTINATION}"
+fi
+
 # General the email/password hash and remove evidence.
 if [ ! -z "${EMAIL}" ] && [ ! -z "${EMAILPASS}" ]; then
     echo "[smtp.mailgun.org]:2525    ${EMAIL}:${EMAILPASS}" > /etc/postfix/sasl_passwd

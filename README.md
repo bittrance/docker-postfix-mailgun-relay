@@ -6,6 +6,7 @@ A docker image that uses postfix as a relay through Mailgun. Useful to link to o
 ```
 SYSTEM_TIMEZONE = UTC or America/New_York
 MYNETWORKS = "10.0.0.0/8 192.168.0.0/16 172.0.0.0/8"
+MYDESTINATION = hostname.domain.com, hostname
 EMAIL = postmaster@example.com (as shown in Mailgun web UI)
 EMAILPASS = password (as shown in Mailgun web UI)
 ```
@@ -18,6 +19,7 @@ docker run -i -t --rm \
     -p 9025:25 \
     -e SYSTEM_TIMEZONE="America/New_York" \
     -e MYNETWORKS="10.0.0.0/8 192.168.0.0/16 172.0.0.0/8" \                    
+    -e MYDESTINATION="hostname.domain.com, hostname" \
     -e EMAIL="postmaster@example.com" \
     -e EMAILPASS="your_password" \
     postfix-mailgun-relay
